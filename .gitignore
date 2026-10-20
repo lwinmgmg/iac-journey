@@ -3,3 +3,9 @@
 *.tfstate.backup
 .env
 *.pem
+*.tfstate.*
+tfplan
+crash.log
+*.tfvars
+!example.tfvars
+keys/
