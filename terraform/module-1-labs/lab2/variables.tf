@@ -14,3 +14,13 @@ variable "project" {
   type        = string
   default     = "Lab2"
 }
+
+locals {
+  name_prefix = "${var.project}-${var.environment}" # e.g. "iac-journey-dev"
+
+  common_tags = {
+    Project     = var.project
+    Environment = var.environment
+    ManagedBy   = "terraform"
+  }
+}

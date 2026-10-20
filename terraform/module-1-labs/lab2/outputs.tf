@@ -12,3 +12,8 @@ output "private_key_path" {
   description = "Where the private key was written"
   value       = local_sensitive_file.private_key.filename
 }
+
+output "tags" {
+  description = "Common tags for resources"
+  value = local.common_tags["Project"]
+}

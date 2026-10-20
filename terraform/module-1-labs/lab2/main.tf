@@ -13,13 +13,3 @@ resource "local_file" "public_key" {
   content         = tls_private_key.lab.public_key_openssh
   file_permission = "0644"
 }
-
-locals {
-  name_prefix = "${var.project}-${var.environment}" # e.g. "iac-journey-dev"
-
-  common_tags = {
-    Project     = var.project
-    Environment = var.environment
-    ManagedBy   = "terraform"
-  }
-}
