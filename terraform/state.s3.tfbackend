@@ -1,0 +1,4 @@
+bucket       = "iac-journey-tfstate-436908790874"
+region       = "ap-southeast-1"
+encrypt      = true
+use_lockfile = true
