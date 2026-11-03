@@ -1,9 +1,9 @@
 # Terraform State
 
-# State Location [terraform.tfstate]
-Terraform store the state in terraform.tfstate file as plain text when a plan is applied.
+# State Location [terraform.tfstate in s3]
+Terraform store the state in terraform.tfstate file as plain text when a plan is applied. Backend automatically manage to upload to s3.
 
-# Version Lock [terraform.tfstate]
+# Version Lock [.terraform.lock.hcl]
 Version lock file create when the terraform is initialize uisng terraform init ... and lock the installed version not to change in the future run.
 We need to explictly update the version if we want to update
 
@@ -13,4 +13,4 @@ IF we want to change the generated password and apply, we need to change the ver
 
 # Bootstrap Problem Solve
 We use Remote backend on S3 to solve this. 
-You can check in backend.tf file.
+You can check in backend.tf file. The bootstrap problem was solved by local apply first, then -migrate-state

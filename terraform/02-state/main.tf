@@ -14,11 +14,11 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_s3_bucket_versioning" "this" {
-  for_each = var.buckets
+  for_each = { for k, v in var.buckets : k => v if v.versioning }
   bucket   = aws_s3_bucket.this[each.key].id
 
   versioning_configuration {
-    status = each.value.versioning ? "Enabled" : "Suspended"
+    status = "Enabled"
   }
 
   lifecycle {
@@ -29,17 +29,12 @@ resource "aws_s3_bucket_versioning" "this" {
   }
 }
 
-# resource "aws_s3_bucket" "logs" {
-#   bucket   = "${var.project}-${var.environment}-logs-${random_string.suffix.result}"
-#   tags = {
-#     Purpose = var.buckets["logs"].purpose
-#   }
-# }
+resource "aws_s3_bucket_public_access_block" "this" {
+  for_each = var.buckets
+  bucket   = aws_s3_bucket.this[each.key].id
 
-# resource "aws_s3_bucket_versioning" "logs" {
-#   bucket = aws_s3_bucket.logs.id
-
-#   versioning_configuration {
-#     status = var.buckets["logs"].versioning ? "Enabled" : "Suspended"
-#   }
-# }
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}

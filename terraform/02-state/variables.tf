@@ -31,9 +31,8 @@ variable "buckets" {
       versioning = true
     },
     "legacy" = {
-      purpose = "Store legacy data"
-      #   Only version enabled is allowed because of the lifecycle postcondition in the main.tf file. If versioning is not enabled, the postcondition will fail and Terraform will not allow the resource to be created.
-      versioning = true
+      purpose    = "Store legacy data"
+      versioning = false
       name       = "myproject-handmade-htet"
     }
   }
