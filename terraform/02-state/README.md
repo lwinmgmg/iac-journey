@@ -72,3 +72,30 @@ terraform destroy
 # Check and verify the resources that will be destroyed.
 # then type yes and enter
 ```
+
+## Reading the plan
+
+Last plan:
+
+```
+Plan: 1 to import, 8 to add, 1 to change, 0 to destroy.
+```
+
+- **0 to destroy:** I check this first. Nothing is deleted, so the refactor is safe.
+  If this number were not 0, I would stop and read why before applying.
+- **1 to import:** `aws_s3_bucket.this["legacy"]` was imported. The bucket
+  `myproject-handmade-htet` already existed (made by hand in Lab 4); the
+  `import` block added it to state instead of creating a new one.
+- **1 to change:** the same `legacy` bucket is updated in place, because
+  `default_tags` adds my tags that the hand-made bucket did not have.
+  Only tags change, the bucket is not recreated.
+- **8 to add:**
+  - `random_string.suffix` (1)
+  - `aws_s3_bucket.this["logs"]` and `["artifacts"]` (2)
+  - `aws_s3_bucket_versioning.this["logs"]` and `["artifacts"]` (2),
+    none for `legacy` because its `versioning = false`
+  - `aws_s3_bucket_public_access_block.this` for logs, artifacts, legacy (3)
+- **moved blocks:** if the old `aws_s3_bucket.logs` is already in state, the plan
+  shows `# aws_s3_bucket.logs has moved to aws_s3_bucket.this["logs"]` and does not
+  destroy/recreate it. On a fresh state there is nothing to move, so they do nothing.
+
